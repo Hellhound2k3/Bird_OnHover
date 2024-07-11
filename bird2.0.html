@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Flying Effect</title>
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 80vw;
+            height: 80vh;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f');
+            background-blend-mode: soft-light;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bird-container {
+            position: absolute;
+            top: 3%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+        }
+
+        .bird {
+            position: relative;
+            background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
+            background-size: auto 100%;
+            width: 88px;
+            height: 125px;
+            transform: scaleX(1);
+            will-change: background-position, transform;
+            animation: fly-cycle 1s steps(10) infinite;
+        }
+
+        @keyframes fly-cycle {
+            100% {
+                background-position: -900px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bird-container">
+            <div class="bird"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script>
+        const container = document.querySelector('.container');
+        const birdContainer = document.querySelector('.bird-container');
+        const bird = document.querySelector('.bird');
+
+        function onMouseMove(event) {
+            const { clientX, clientY } = event;
+
+            const containerRect = container.getBoundingClientRect();
+
+            if (clientX >= containerRect.left && clientX <= containerRect.right &&
+                clientY >= containerRect.top && clientY <= containerRect.bottom) {
+
+                const birdRect = birdContainer.getBoundingClientRect();
+                const birdX = birdRect.left + birdRect.width / 2;
+                const birdY = birdRect.top + birdRect.height / 2;
+                const angle = Math.atan2(clientY - birdY, clientX - birdX) * 180 / Math.PI;
+
+                gsap.to(birdContainer, {
+                    x: clientX - containerRect.left - birdContainer.offsetWidth / 2,
+                    y: clientY - containerRect.top - birdContainer.offsetHeight / 2,
+                    duration: 1,
+                    ease: 'power2.out'
+                });
+
+                const containerMidX = containerRect.left + containerRect.width / 2;
+                const containerMidY = containerRect.top + containerRect.height / 2;
+
+                if (clientX < containerMidX && clientY < containerMidY) {
+                    // Top-left
+                    gsap.to(bird, { scaleX: -1, y:20, x:-180, rotation: 20, duration: 0.5, ease: 'power2.out' });
+                } else if (clientX >= containerMidX && clientY < containerMidY) {
+                    // Top-right
+                    gsap.to(bird, { scaleX: 1, y:20, x:-270, rotation: -20, duration: 0.5, ease: 'power2.out' });
+                } else if (clientX < containerMidX && clientY >= containerMidY) {
+                    // Bottom-left
+                    gsap.to(bird, { scaleX: -1, y:-50, x:-180, rotation: -25, duration: 0.5, ease: 'power2.out' });
+                } else {
+                    // Bottom-right
+                    gsap.to(bird, { scaleX: 1, y:-50, x:-270, rotation: 25, duration: 0.5, ease: 'power2.out' });
+                }
+            }
+        }
+
+        container.addEventListener('mousemove', onMouseMove);
+    </script>
+</body>
+</html>
