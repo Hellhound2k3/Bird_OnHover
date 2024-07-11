@@ -28,6 +28,7 @@
         .bird-container {
             position: absolute;
             top: 3%;
+            left: 5%;
             width: 100px;
             height: 100px;
             display: flex;
@@ -92,16 +93,16 @@
 
                 if (clientX < containerMidX && clientY < containerMidY) {
                     // Top-left
-                    gsap.to(bird, { scaleX: -1, y:20, x:-180, rotation: 20, duration: 0.5, ease: 'power2.out' });
+                    gsap.to(bird, { scaleX: -1, rotation: 20, duration: 0.5, ease: 'power2.out' });
                 } else if (clientX >= containerMidX && clientY < containerMidY) {
                     // Top-right
-                    gsap.to(bird, { scaleX: 1, y:20, x:-270, rotation: -20, duration: 0.5, ease: 'power2.out' });
+                    gsap.to(bird, { scaleX: 1, rotation: -20, duration: 0.5, ease: 'power2.out' });
                 } else if (clientX < containerMidX && clientY >= containerMidY) {
                     // Bottom-left
-                    gsap.to(bird, { scaleX: -1, y:-50, x:-180, rotation: -25, duration: 0.5, ease: 'power2.out' });
+                    gsap.to(bird, { scaleX: -1, rotation: -25, duration: 0.5, ease: 'power2.out' });
                 } else {
                     // Bottom-right
-                    gsap.to(bird, { scaleX: 1, y:-50, x:-270, rotation: 25, duration: 0.5, ease: 'power2.out' });
+                    gsap.to(bird, { scaleX: 1, rotation: 25, duration: 0.5, ease: 'power2.out' });
                 }
             }
         }
